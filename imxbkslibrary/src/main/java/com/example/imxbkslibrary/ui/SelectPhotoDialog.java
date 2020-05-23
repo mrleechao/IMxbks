@@ -29,12 +29,11 @@ public class SelectPhotoDialog
         mDialog = new Dialog(context);
         mDialog.setContentView(view);
         mDialog.setCanceledOnTouchOutside(true);
-        mDialog.getWindow().getAttributes().gravity = Gravity.BOTTOM;
         btn_pz = (Button) view.findViewById(R.id.btn_pz);
         btn_xc = (Button) view.findViewById(R.id.btn_xc);
         btn_qx = (Button) view.findViewById(R.id.btn_qx);
         WindowManager.LayoutParams lp = mDialog.getWindow().getAttributes();
-        // ���ñ�����͸����
+        lp.gravity=Gravity.BOTTOM;
         lp.dimAmount = 0.3f;
         WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         Display display = windowManager.getDefaultDisplay();

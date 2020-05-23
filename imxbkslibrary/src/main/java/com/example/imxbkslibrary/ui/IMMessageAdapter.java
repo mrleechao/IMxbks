@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
+import com.example.imxbkslibrary.PhotoViewActivity;
 import com.example.imxbkslibrary.R;
 import com.example.imxbkslibrary.bean.SocketDataBean;
 import com.example.imxbkslibrary.util.DateUtils;
@@ -59,13 +60,11 @@ private List<SocketDataBean.Params> listBeans;
 
     @Override
     public void onBindViewHolder(MyHolder holder, final int position) {
-//        Log.e("------Adpater--",""+com.alibaba.fastjson.JSONObject.toJSONString(listBeans));
         try {
              if (!listBeans.get(position).getUid().equals(uid)){
                 holder.tv_name_left.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
                          .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head_left);
-//                ImagLoadUtils.loadImg(listBeans.get(position).getAvatar(),holder.iv_head_left,context,0);
                 if(!TextUtils.isEmpty(listBeans.get(position).getTime())){
                     int timelength=listBeans.get(position).getTime().length();
                     if (timelength==10){
@@ -84,13 +83,12 @@ private List<SocketDataBean.Params> listBeans;
                     holder.message_left.setVisibility(View.GONE);
                     holder.iv_message_left.setVisibility(View.VISIBLE);
                     Glide.with(context).load(listBeans.get(position).getContent()).into(holder.iv_message_left);
-//                    ImagLoadUtils.loadImg(listBeans.get(position).getContent(),holder.iv_message_left,context,0);
                     holder.iv_message_left.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent();
-//                            intent.setClass(context, PhotoPreView.class);
-//                            intent.putExtra("photo", listBeans.get(position).getContent());
+                            intent.setClass(context, PhotoViewActivity.class);
+                            intent.putExtra("photo", listBeans.get(position).getContent());
                             context.startActivity(intent);
                         }
                     });
@@ -108,7 +106,6 @@ private List<SocketDataBean.Params> listBeans;
                 holder.tv_name_right.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
                          .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head_right);
-//                ImagLoadUtils.loadImg(listBeans.get(position).getAvatar(),holder.iv_head_right,context,0);
                 holder.tv_time_right.setText(""+ DateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
                 if (listBeans.get(position).getType().equals("text")) {
                     holder.message_right.setVisibility(View.VISIBLE);
@@ -118,15 +115,13 @@ private List<SocketDataBean.Params> listBeans;
                 }else {
                     holder.message_right.setVisibility(View.GONE);
                     holder.iv_message_right.setVisibility(View.VISIBLE);
-//                    holder.iv_message_right.setImageURI(Uri.parse(listBeans.get(position).getImg_path()));
                     Glide.with(context).load(listBeans.get(position).getContent()).into(holder.iv_message_right);
-//                ImagLoadUtils.loadImg(listBeans.get(position).getContent(),holder.iv_message_right,context,0);
                     holder.iv_message_right.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                                 Intent intent = new Intent();
-//                                intent.setClass(context, PhotoPreView.class);
-//                                intent.putExtra("photo", listBeans.get(position).getContent());
+                                intent.setClass(context, PhotoViewActivity.class);
+                                intent.putExtra("photo", listBeans.get(position).getContent());
                                 context.startActivity(intent);
 
                         }
@@ -148,30 +143,11 @@ private List<SocketDataBean.Params> listBeans;
 
     @Override
     public int getItemViewType(int position) {
-//
         if (listBeans.get(position).getUid().equals(uid)){
             return ITEM_RIGHT;
         }else {
             return ITEM_LEFT;
         }
-//
-//        try {
-//            if (listBeans.get(position).status==ITEM_LEFT){
-//                return ITEM_LEFT;
-//            }else if (listBeans.get(position).status==ITEM_RIGHT){
-//                return ITEM_RIGHT;
-//            }else {
-//                if (listBeans.get(position).role.equals("1")){//客服
-//                    return ITEM_LEFT;
-//                }else {
-//                    return ITEM_RIGHT;
-//                }
-//            }
-//        }catch (Exception e){
-//
-//            return ITEM_LEFT;
-//        }
-
 
     }
 

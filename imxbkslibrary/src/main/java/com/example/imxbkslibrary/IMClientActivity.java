@@ -61,7 +61,6 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
 
 import static com.scwang.smartrefresh.layout.header.ClassicsHeader.REFRESH_HEADER_PULLDOWN;
@@ -158,6 +157,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 
     @Override
     protected void initData() {
+        upImage("ahhahahahaha");
         bundleFid = getIntent().getStringExtra("bundleFid");
         if (bundleFid ==null){
             getUserinfo();
@@ -249,12 +249,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        iv_open_img.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
+        iv_open_img.setOnClickListener(this);
 
         imMessageAdapter.setImOnClickListener(new IMMessageAdapter.IMOnClickListener() {
             @Override
@@ -266,7 +261,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                     String mobile=umobile;
                     String name=uname;
                   Intent intent=new Intent();
-//                  intent.setClass(IMClientActivity.this,IMUserInfoActivity.class);
+                  intent.setClass(IMClientActivity.this,IMUserInfoActivity.class);
                   intent.putExtra("avatar",avatar);
                   intent.putExtra("city_text",city_text);
                   intent.putExtra("mobile",mobile);
@@ -869,4 +864,17 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 //            }
 //        });
 //    }
+
+    private void upImage(String image_path){
+        if ( IMSystem.getInstance().getExecuteImageUp()==null){
+            ToastUtils.ToastShowShort(IMClientActivity.this,"请实现上传图片的方法");
+            return;
+        }
+        IMSystem.getInstance().getExecuteImageUp().upImg(image_path, "123", new UpImageCallback() {
+            @Override
+            public void upadd(String path, String id) {
+                ToastUtils.ToastShowShort(IMClientActivity.this,""+path+"  \n"+id);
+            }
+        });
+    }
 }

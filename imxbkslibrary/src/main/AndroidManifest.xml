@@ -6,8 +6,14 @@
     <uses-permission android:name="android.permission.CAMERA"/>
     <application>
         <activity android:name=".MainActivity"></activity>
-        <activity android:name=".IMConversationListActivity"></activity>
-        <activity android:name=".IMClientActivity"></activity>
+        <activity android:name=".IMConversationListActivity"
+            android:launchMode="singleTop"></activity>
+        <activity android:name=".IMClientActivity"
+            android:launchMode="singleTop"></activity>
+        <activity android:name=".PhotoViewActivity"
+            android:launchMode="singleTop"></activity>
+        <activity android:name=".IMUserInfoActivity"
+            android:launchMode="singleTop"></activity>
         <service android:name=".JWebSocketClientService" />
     </application>
 
