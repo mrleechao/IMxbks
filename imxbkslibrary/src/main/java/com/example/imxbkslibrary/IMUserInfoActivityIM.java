@@ -25,6 +25,7 @@ public class IMUserInfoActivityIM extends IMBaseActivity {
 
     @Override
     protected void initView() {
+        IMSystem.getInstance().addActivity(this);
         iv_head = findViewById(R.id.iv_head);
         tv_name=findViewById(R.id.tv_name);
         tv_table=findViewById(R.id.tv_table);
@@ -57,5 +58,11 @@ public class IMUserInfoActivityIM extends IMBaseActivity {
     @Override
     protected void listener() {
 
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        IMSystem.getInstance().removeActivity(this);
     }
 }

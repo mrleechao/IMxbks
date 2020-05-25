@@ -10,8 +10,8 @@ package com.example.imxbkslibrary;
 public interface UpImageCallback {
     /**
      *
-     * @param path 传入图片链接
+     * @param result 服务器返回的图片上传结果
      * @param id
      */
-    void   upadd(String path,String id);
+    void   upadd(String result,String id);
 }

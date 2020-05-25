@@ -1,5 +1,6 @@
 package com.example.imxbkslibrary;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -10,6 +11,8 @@ import android.widget.ImageView;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.Stack;
+
 /**
  * Time:2020/5/23
  * <p>
@@ -19,6 +22,7 @@ import org.json.JSONObject;
  */
 public class IMSystem {
     public static IMSystem imSystem=null;
+    private static Stack<Activity> activityStack;
     private IMSystem(){};
     synchronized public static IMSystem getInstance(){
         if (imSystem==null){
@@ -107,11 +111,12 @@ public class IMSystem {
     public interface ExecuteImageUp{
         /**
          * 实现改方法接收需要上传的图片地址
+         * @param context  若需要实现加载框，请传入当前上下文
          * @param path  本地图片地址
          * @param id
          * @param upImageCallback 上传成功后调用
          */
-        void upImg(String path, String id, UpImageCallback upImageCallback);
+        void upImg(Context context,String path, String id, UpImageCallback upImageCallback);
 
 //        void setImageLoader(Context context,ImageView view,String path);
 
@@ -129,7 +134,34 @@ public class IMSystem {
 
 
 
+    protected void addActivity(Activity activity){
+        if (activityStack == null) {
+            activityStack = new Stack<Activity>();
+        }
+        activityStack.add(activity);
+    }
 
+    protected void removeActivity(Activity activity){
+        if (activity != null) {
+            if (activityStack!=null){
+                activityStack.remove(activity);
+                activity.finish();
+                activity = null;
+            }
 
+        }
+    }
+
+    /**
+     * 结束所有Activity
+     */
+    protected void finishAllActivity() {
+        for (int i = 0, size = activityStack.size(); i < size; i++) {
+            if (null != activityStack.get(i)) {
+                activityStack.get(i).finish();
+            }
+        }
+        activityStack.clear();
+    }
 
 }

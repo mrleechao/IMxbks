@@ -39,6 +39,7 @@ import com.alibaba.fastjson.JSONException;
 import com.example.imxbkslibrary.base.IMBaseActivity;
 import com.example.imxbkslibrary.bean.FristSendSocketBean;
 import com.example.imxbkslibrary.bean.HistoryDataBean;
+import com.example.imxbkslibrary.bean.IMImageDataBean;
 import com.example.imxbkslibrary.bean.PullHistoryData;
 import com.example.imxbkslibrary.bean.ReceiveDataBean;
 import com.example.imxbkslibrary.bean.ReceiveDataListBean;
@@ -137,6 +138,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
 
     @Override
     protected void initView() {
+        IMSystem.getInstance().addActivity(this);
         top_title=findViewById(R.id.top_title);
         btn_back=findViewById(R.id.btn_back);
         tv_send = findViewById(R.id.tv_send);
@@ -335,6 +337,8 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
           fristSendSocketBean.setParams(params);
 
 
+      }else {
+         IMSystem.getInstance().finishAllActivity();
       }
   }
 
@@ -362,6 +366,8 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
             fristSendSocketBean.setParams(params);
 
 
+        }else {
+            IMSystem.getInstance().finishAllActivity();
         }
     }
 
@@ -709,6 +715,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
         super.onDestroy();
         unRegisterReceiver();
         unbindService(serviceConnection);
+        IMSystem.getInstance().removeActivity(this);
     }
 
 
@@ -874,11 +881,17 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
             IMToastUtils.ToastShowShort(IMClientActivityIM.this,"请实现上传图片的方法");
             return;
         }
-        IMSystem.getInstance().getExecuteImageUp().upImg(image_path, "123", new UpImageCallback() {
+        IMSystem.getInstance().getExecuteImageUp().upImg(IMClientActivityIM.this,image_path, "123", new UpImageCallback() {
             @Override
-            public void upadd(String path, String id) {
-                IMToastUtils.ToastShowShort(IMClientActivityIM.this,""+path+"  \n"+id);
+            public void upadd(String result, String id) {
+            IMImageDataBean.DataBean imageDataBean= com.alibaba.fastjson.JSONObject.parseObject(result,IMImageDataBean.DataBean.class);
+//                if (imageDataBean.getCode()==0){
+                    imgUrl = imageDataBean.getPath();
+                    sendMessage(1);
+//                }
+
             }
         });
     }
+
 }

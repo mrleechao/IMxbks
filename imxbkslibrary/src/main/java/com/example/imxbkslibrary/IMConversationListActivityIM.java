@@ -66,6 +66,7 @@ public class IMConversationListActivityIM extends IMBaseActivity implements View
 
     @Override
     protected void initView() {
+        IMSystem.getInstance().addActivity(this);
         top_title=findViewById(R.id.top_title);
         btn_back=findViewById(R.id.btn_back);
         recycler_view=findViewById(R.id.recycler_view);
@@ -337,5 +338,6 @@ public class IMConversationListActivityIM extends IMBaseActivity implements View
         super.onDestroy();
         unbindService(conn);
         unregisterReceiver(chatMessageReceiver);
+        IMSystem.getInstance().removeActivity(this);
     }
 }
