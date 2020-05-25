@@ -15,7 +15,7 @@
         android:layout_marginTop="10dp"
         android:text=""/>
 
-    <ImageView
+    <com.example.imxbkslibrary.ui.IMCircleImageView
         android:id="@+id/iv_head"
         android:layout_width="45dp"
         android:layout_height="45dp"

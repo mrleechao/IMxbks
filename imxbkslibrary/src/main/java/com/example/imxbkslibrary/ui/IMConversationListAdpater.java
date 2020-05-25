@@ -15,7 +15,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.imxbkslibrary.IMClientActivityIM;
+import com.example.imxbkslibrary.IMSystem;
 import com.example.imxbkslibrary.R;
+import com.example.imxbkslibrary.UpImageCallback;
 import com.example.imxbkslibrary.servicebean.ConversationListData;
 import com.example.imxbkslibrary.util.IMDateUtils;
 
@@ -70,9 +72,10 @@ public class IMConversationListAdpater extends RecyclerView.Adapter<IMConversati
                 holder.tv_num.setVisibility(View.GONE);
             }
         });
-        Glide.with(context).load(dataBeanList.get(position).getAvatar())
-                .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head);
-//        ImagLoadUtils.loadImg(dataBeanList.get(position).getAvatar(),holder.iv_head,context,0);
+//        Glide.with(context).load(dataBeanList.get(position).getAvatar())
+//                .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head);
+        Glide.with(context).load(dataBeanList.get(position).getAvatar()).into(holder.iv_head);
+//        IMSystem.getInstance().getExecuteImageUp().setImageLoader(context,holder.iv_head,dataBeanList.get(position).getAvatar());
         if (position==0){
             if (flagRead){
                 holder.tv_num.setVisibility(View.VISIBLE);
@@ -96,7 +99,7 @@ public class IMConversationListAdpater extends RecyclerView.Adapter<IMConversati
     public class MyHolder extends RecyclerView.ViewHolder{
     ConstraintLayout parent_click;
     TextView tv_name,tv_message,tv_time,tv_num;
-        ImageView iv_head;
+        IMCircleImageView iv_head;
         public MyHolder(View itemView) {
             super(itemView);
             parent_click=itemView.findViewById(R.id.parent_click);

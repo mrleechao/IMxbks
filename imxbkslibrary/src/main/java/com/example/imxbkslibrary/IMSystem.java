@@ -2,7 +2,10 @@ package com.example.imxbkslibrary;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v4.content.FileProvider;
 import android.text.TextUtils;
+import android.widget.ImageView;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -25,21 +28,26 @@ public class IMSystem {
     }
     private String UserInfo;
     private String Token;
+    private String authority;
 
 
     /**
      * 进入客服系统调用方法
      * @param context
      * @param userinfo  用户信息
-     * @param token
+     * @param authority The authority of a {@link FileProvider} defined in a
+     *        {@code <provider>} element in your app's manifest.
      */
-    public void intoIM(Context context, String userinfo, String token){
+    public IMSystem intoIM(@NonNull Context context,@NonNull  String userinfo,@NonNull  String authority){
         if (TextUtils.isEmpty(userinfo)){
-            throw new NullPointerException("检查参数是否正确");
+            throw new NullPointerException("检查参数userinfo是否正确");
+        }
+        if (TextUtils.isEmpty(authority)){
+            throw new NullPointerException("检查参数authority是否正确");
         }
         try {
-            UserInfo=userinfo;
-            Token=token;
+            this.UserInfo=userinfo;
+            this.authority=authority;
             JSONObject jsonObject=new JSONObject(userinfo);
             JSONObject data=jsonObject.optJSONObject("data");
             String is_service=data.optString("is_service");
@@ -58,7 +66,27 @@ public class IMSystem {
             e.printStackTrace();
             throw new IllegalArgumentException("json解析错误");
         }
+        return this;
+    }
 
+    /**
+     * 用户信息
+     * @param userInfo
+     * @return
+     */
+    public IMSystem setUserInfo(String userInfo){
+        this.UserInfo=userInfo;
+        return this;
+
+    }
+    /**
+     *
+     * @param  authority The authority of a {@link FileProvider} defined in a
+     *        {@code <provider>} element in your app's manifest.
+     */
+    public IMSystem setAuthority(String authority){
+        this.authority=authority;
+        return this;
     }
 
     public String getToken() {
@@ -69,6 +97,9 @@ public class IMSystem {
         return UserInfo;
     }
 
+    public String getAuthority() {
+        return authority;
+    }
 
     /**
      * 图片上传下发接口
@@ -82,15 +113,23 @@ public class IMSystem {
          */
         void upImg(String path, String id, UpImageCallback upImageCallback);
 
+        void setImageLoader(Context context,ImageView view,String path);
+
     }
 
     private ExecuteImageUp executeImageUp;
 
-    protected ExecuteImageUp getExecuteImageUp() {
+    public ExecuteImageUp getExecuteImageUp() {
         return executeImageUp;
     }
 
     public void setExecuteImageUp(ExecuteImageUp executeImageUp) {
         this.executeImageUp = executeImageUp;
     }
+
+
+
+
+
+
 }

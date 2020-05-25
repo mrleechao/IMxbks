@@ -6,7 +6,7 @@
     android:background="#ffffff"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <ImageView
+    <com.example.imxbkslibrary.ui.IMCircleImageView
         android:id="@+id/iv_head"
         android:layout_width="45dp"
         android:layout_height="45dp"

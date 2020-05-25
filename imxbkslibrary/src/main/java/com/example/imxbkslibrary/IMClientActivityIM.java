@@ -47,6 +47,7 @@ import com.example.imxbkslibrary.bean.SocketDataBean;
 import com.example.imxbkslibrary.bean.IMUserInfoBean;
 import com.example.imxbkslibrary.ui.IMMessageAdapter;
 import com.example.imxbkslibrary.ui.IMSelectPhotoDialog;
+import com.example.imxbkslibrary.util.IMBitmapComPressUtils;
 import com.example.imxbkslibrary.util.IMCacheUtils;
 import com.example.imxbkslibrary.util.IMKeyboardChangeListener;
 import com.example.imxbkslibrary.util.IMToastUtils;
@@ -63,7 +64,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static com.scwang.smartrefresh.layout.header.ClassicsHeader.REFRESH_HEADER_PULLDOWN;
+//import static com.scwang.smartrefresh.layout.header.ClassicsHeader.REFRESH_HEADER_PULLDOWN;
 
 /**
  * 客户端
@@ -151,13 +152,12 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
 //        startJWebSClientService();
         bindService();
         doRegisterReceiver();
-         REFRESH_HEADER_PULLDOWN="下拉加载历史消息";
+//         REFRESH_HEADER_PULLDOWN="下拉加载历史消息";
         mRefreshLayout.setEnableLoadmore(false);
     }
 
     @Override
     protected void initData() {
-        upImage("ahhahahahaha");
         bundleFid = getIntent().getStringExtra("bundleFid");
         if (bundleFid ==null){
             getUserinfo();
@@ -739,7 +739,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
         if (Build.VERSION.SDK_INT < 24) {
             uri = Uri.fromFile(imgFile);//7.0这里会闪退
         } else {
-            uri = FileProvider.getUriForFile(IMClientActivityIM.this, "com.xbhc.user.fileprovider", imgFile);
+            uri = FileProvider.getUriForFile(IMClientActivityIM.this, IMSystem.getInstance().getAuthority(), imgFile);
             camera.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
         }
         camera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -757,28 +757,32 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (requestCode == FLAG_CHOOSE_IMG && resultCode == RESULT_OK) {         //相册页面回调
-//
-//            if (data != null)
-//            {
-//                Uri uri = data.getData();
-//                String imgpath = BitmapComPressUtils.getRealFilePath(IMClientActivityIM.this, uri);
-//                Intent intent = new Intent(this, ActivityPhoto.class);
-//                intent.putExtra("path", imgpath);
-//                startActivityForResult(intent, FLAG_MODIFY_FINISH);
-//            }
-//
-//        } else if (requestCode == FLAG_CHOOSE_CAMERA && resultCode == RESULT_OK) {
-//            Intent intent = new Intent(this, ActivityPhoto.class);
-//            if (uri.getScheme() != null && "content".equalsIgnoreCase(uri.getScheme())) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == FLAG_CHOOSE_IMG && resultCode == RESULT_OK) {         //相册页面回调
+
+            if (data != null)
+            {
+                Uri uri = data.getData();
+                String imgpath = IMBitmapComPressUtils.getRealFilePath(IMClientActivityIM.this, uri);
+                upImage(imgpath);
+            }
+
+        } else if (requestCode == FLAG_CHOOSE_CAMERA && resultCode == RESULT_OK) {
+            try{
+                if (uri.getScheme() != null && "content".equalsIgnoreCase(uri.getScheme())) {
 //                intent.putExtra("path", imgFile.getAbsolutePath());
-//            } else {
+                    upImage(imgFile.getAbsolutePath());
+                } else {
 //                intent.putExtra("path", uri.getPath());
-//            }
-//            startActivityForResult(intent, FLAG_MODIFY_FINISH);
-//
-//        } else if (requestCode == FLAG_MODIFY_FINISH && resultCode == RESULT_OK) {      //ActivityPhoto页面回调回来
+                    upImage(uri.getPath());
+                }
+            }catch (Exception e){
+                IMToastUtils.ToastShowShort(IMClientActivityIM.this,"拍照路径出错！");
+            }
+
+
+        }
+//        else if (requestCode == FLAG_MODIFY_FINISH && resultCode == RESULT_OK) {      //ActivityPhoto页面回调回来
 //            if (data != null)
 //            {
 //                final String path = data.getStringExtra("path");

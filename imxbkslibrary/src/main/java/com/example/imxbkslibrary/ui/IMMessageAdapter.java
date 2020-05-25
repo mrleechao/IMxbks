@@ -63,7 +63,7 @@ private List<SocketDataBean.Params> listBeans;
              if (!listBeans.get(position).getUid().equals(uid)){
                 holder.tv_name_left.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
-                         .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head_left);
+                        .into(holder.iv_head_left);
                 if(!TextUtils.isEmpty(listBeans.get(position).getTime())){
                     int timelength=listBeans.get(position).getTime().length();
                     if (timelength==10){
@@ -82,6 +82,7 @@ private List<SocketDataBean.Params> listBeans;
                     holder.message_left.setVisibility(View.GONE);
                     holder.iv_message_left.setVisibility(View.VISIBLE);
                     Glide.with(context).load(listBeans.get(position).getContent()).into(holder.iv_message_left);
+
                     holder.iv_message_left.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -104,7 +105,7 @@ private List<SocketDataBean.Params> listBeans;
             }else {
                 holder.tv_name_right.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
-                         .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head_right);
+                 .into(holder.iv_head_right);
                 holder.tv_time_right.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
                 if (listBeans.get(position).getType().equals("text")) {
                     holder.message_right.setVisibility(View.VISIBLE);
@@ -153,7 +154,7 @@ private List<SocketDataBean.Params> listBeans;
     class MyHolder extends RecyclerView.ViewHolder{
     private TextView message_left,message_right,tv_time_left,tv_time_right,tv_name_left,tv_name_right;
     private ImageView iv_message_left,iv_message_right;
-    private ImageView iv_head_left,iv_head_right;
+    private IMCircleImageView iv_head_left,iv_head_right;
         public MyHolder(View itemView,int itemType) {
             super(itemView);
             switch (itemType){

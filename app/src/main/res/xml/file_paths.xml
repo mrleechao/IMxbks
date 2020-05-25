@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+    <paths>
+        <external-path path="" name="camera_photos" />
+        <files-path path="" name="photos" />
+    </paths>
+</resources>
+<!-- <root-path path="" name="camera_photos/" />-->
+
+    <!--<files-path name="files_images" path="com.zckj.steward/cache/" /> &lt;!&ndash;//相当 Context.getFilesDir() + path, name是分享url的一部分&ndash;&gt;
+
+       <cache-path name="cache_images" path="" /> &lt;!&ndash;//getCacheDir()&ndash;&gt;
+
+       <external-cache-path name="cash" path="/storage/emulated/0/Android/data/com.zckj.steward/cache/" /> --><!--//Context.getExternalCacheDir()-->
