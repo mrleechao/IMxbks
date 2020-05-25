@@ -113,7 +113,7 @@ public class IMSystem {
          */
         void upImg(String path, String id, UpImageCallback upImageCallback);
 
-        void setImageLoader(Context context,ImageView view,String path);
+//        void setImageLoader(Context context,ImageView view,String path);
 
     }
 
