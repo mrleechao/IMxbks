@@ -17,14 +17,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.alibaba.fastjson.JSONException;
-import com.example.imxbkslibrary.base.BaseActivity;
+import com.example.imxbkslibrary.base.IMBaseActivity;
 import com.example.imxbkslibrary.bean.FristSendSocketBean;
 import com.example.imxbkslibrary.bean.ReceiveDataBean;
 import com.example.imxbkslibrary.bean.SocketDataBean;
-import com.example.imxbkslibrary.bean.UserInfoBean;
+import com.example.imxbkslibrary.bean.IMUserInfoBean;
 import com.example.imxbkslibrary.servicebean.ConversationListData;
 import com.example.imxbkslibrary.ui.IMConversationListAdpater;
-import com.example.imxbkslibrary.util.ToastUtils;
+import com.example.imxbkslibrary.util.IMToastUtils;
 
 
 import org.json.JSONObject;
@@ -35,7 +35,7 @@ import java.util.List;
 /**
  * 会话列表
  */
-public class IMConversationListActivity extends BaseActivity implements View.OnClickListener {
+public class IMConversationListActivityIM extends IMBaseActivity implements View.OnClickListener {
     private final String TAG="IMConversationActivity";
     private RelativeLayout btn_back;
     private TextView top_title;
@@ -47,7 +47,7 @@ public class IMConversationListActivity extends BaseActivity implements View.OnC
     private String imgUrl="";
     private boolean robot;
     private SocketDataBean.Params robotBean;
-    private UserInfoBean userInfoBean;
+    private IMUserInfoBean IMUserInfoBean;
     private int page=1;
 
     private JWebSocketClientService.JWebSocketClientBinder binder;
@@ -97,16 +97,16 @@ public class IMConversationListActivity extends BaseActivity implements View.OnC
         String userinfo=getIntent().getStringExtra("userinfo");
         Log.e(TAG,"获取用户信息"+userinfo);
         if (!TextUtils.isEmpty(userinfo)){
-            userInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo, UserInfoBean.class);
+            IMUserInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
             params = new SocketDataBean.Params();
-            params.setUid(userInfoBean.getData().getUser_id());
-            params.setAvatar(userInfoBean.getData().getAvatar());
-            params.setMobile(userInfoBean.getData().getMobile());
-            params.setRole(userInfoBean.getData().getRole());
-            params.setUname(userInfoBean.getData().getNickname());
+            params.setUid(IMUserInfoBean.getData().getUser_id());
+            params.setAvatar(IMUserInfoBean.getData().getAvatar());
+            params.setMobile(IMUserInfoBean.getData().getMobile());
+            params.setRole(IMUserInfoBean.getData().getRole());
+            params.setUname(IMUserInfoBean.getData().getNickname());
 
 
-            UserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo,UserInfoBean.class);
+            IMUserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
             fristSendSocketBean = new FristSendSocketBean();
             FristSendSocketBean.Params params= fristSendSocketBean.new Params();
             params.setAvatar(data.getData().getAvatar());
@@ -149,7 +149,7 @@ public class IMConversationListActivity extends BaseActivity implements View.OnC
             String message=intent.getStringExtra("message");
             String close=intent.getStringExtra("close");
             if (!TextUtils.isEmpty(close)){
-                ToastUtils.ToastShowShort(IMConversationListActivity.this,""+close);
+                IMToastUtils.ToastShowShort(IMConversationListActivityIM.this,""+close);
             }
             if (TextUtils.isEmpty(message)){
                return;

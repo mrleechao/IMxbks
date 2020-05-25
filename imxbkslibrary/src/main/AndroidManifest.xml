@@ -5,14 +5,13 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.CAMERA"/>
     <application>
-        <activity android:name=".MainActivity"></activity>
-        <activity android:name=".IMConversationListActivity"
+        <activity android:name=".IMConversationListActivityIM"
             android:launchMode="singleTop"></activity>
-        <activity android:name=".IMClientActivity"
+        <activity android:name=".IMClientActivityIM"
             android:launchMode="singleTop"></activity>
-        <activity android:name=".PhotoViewActivity"
+        <activity android:name=".IMPhotoViewActivity"
             android:launchMode="singleTop"></activity>
-        <activity android:name=".IMUserInfoActivity"
+        <activity android:name=".IMUserInfoActivityIM"
             android:launchMode="singleTop"></activity>
         <service android:name=".JWebSocketClientService" />
     </application>

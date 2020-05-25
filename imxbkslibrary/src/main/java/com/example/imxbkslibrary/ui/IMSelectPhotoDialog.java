@@ -14,7 +14,7 @@ import com.example.imxbkslibrary.R;
 /**
  * Created by Administrator on 2017/12/7/007.
  */
-public class SelectPhotoDialog
+public class IMSelectPhotoDialog
 {
 
     private Dialog mDialog;             //对话框
@@ -22,7 +22,7 @@ public class SelectPhotoDialog
     public Button btn_xc;
     public Button btn_qx;
 
-    public SelectPhotoDialog(Context context) {
+    public IMSelectPhotoDialog(Context context) {
         LayoutInflater inflater = LayoutInflater.from(context);
         //选择头像的方式对话框布局文件
         View view = inflater.inflate(R.layout.im_activity_setphoto_select, null);

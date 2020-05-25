@@ -7,7 +7,7 @@ package com.example.imxbkslibrary.bean;
  * <p>
  * Description:
  */
-public class UserInfoBean {
+public class IMUserInfoBean {
 
     /**
      * name : user/get-user-info

@@ -7,7 +7,7 @@ package com.example.imxbkslibrary.bean;
  * <p>
  * Description:
  */
-public class ImageDataBean {
+public class IMImageDataBean {
 
     /**
      * name : site/upload

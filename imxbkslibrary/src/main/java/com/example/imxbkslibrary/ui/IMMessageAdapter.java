@@ -2,7 +2,6 @@ package com.example.imxbkslibrary.ui;
 
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
 import android.util.Log;
@@ -16,10 +15,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.imxbkslibrary.PhotoViewActivity;
+import com.example.imxbkslibrary.IMPhotoViewActivity;
 import com.example.imxbkslibrary.R;
 import com.example.imxbkslibrary.bean.SocketDataBean;
-import com.example.imxbkslibrary.util.DateUtils;
+import com.example.imxbkslibrary.util.IMDateUtils;
 
 import java.util.List;
 
@@ -68,9 +67,9 @@ private List<SocketDataBean.Params> listBeans;
                 if(!TextUtils.isEmpty(listBeans.get(position).getTime())){
                     int timelength=listBeans.get(position).getTime().length();
                     if (timelength==10){
-                        holder.tv_time_left.setText(""+ DateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime()+"000")));
+                        holder.tv_time_left.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime()+"000")));
                     }else {
-                        holder.tv_time_left.setText(""+ DateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
+                        holder.tv_time_left.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
                     }
                 }
 
@@ -87,7 +86,7 @@ private List<SocketDataBean.Params> listBeans;
                         @Override
                         public void onClick(View v) {
                             Intent intent = new Intent();
-                            intent.setClass(context, PhotoViewActivity.class);
+                            intent.setClass(context, IMPhotoViewActivity.class);
                             intent.putExtra("photo", listBeans.get(position).getContent());
                             context.startActivity(intent);
                         }
@@ -106,7 +105,7 @@ private List<SocketDataBean.Params> listBeans;
                 holder.tv_name_right.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
                          .apply(RequestOptions.bitmapTransform(new CircleCrop())).into(holder.iv_head_right);
-                holder.tv_time_right.setText(""+ DateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
+                holder.tv_time_right.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
                 if (listBeans.get(position).getType().equals("text")) {
                     holder.message_right.setVisibility(View.VISIBLE);
                     holder.iv_message_right.setVisibility(View.GONE);
@@ -120,7 +119,7 @@ private List<SocketDataBean.Params> listBeans;
                         @Override
                         public void onClick(View v) {
                                 Intent intent = new Intent();
-                                intent.setClass(context, PhotoViewActivity.class);
+                                intent.setClass(context, IMPhotoViewActivity.class);
                                 intent.putExtra("photo", listBeans.get(position).getContent());
                                 context.startActivity(intent);
 

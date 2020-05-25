@@ -1,6 +1,5 @@
 package com.example.imxbkslibrary.base;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -22,7 +21,7 @@ import android.view.inputmethod.InputMethodManager;
 /**
  * Created by Administrator on 2017/10/16/016.
  */
-public abstract class BaseActivity extends FragmentActivity {
+public abstract class IMBaseActivity extends FragmentActivity {
 
     private String mMsgContent;
     public boolean isVoice=false;//是否语音提示
@@ -104,7 +103,7 @@ public abstract class BaseActivity extends FragmentActivity {
     /**
      * @return 返回当前实例，代替  xxxxxActivity.this
      */
-    protected  BaseActivity getLActivity() {
+    protected IMBaseActivity getLActivity() {
         return this;
     }
 

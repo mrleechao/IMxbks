@@ -13,7 +13,7 @@ import static android.os.Environment.MEDIA_MOUNTED;
 /**
  * Created by Administrator on 2017/12/7/007.
  */
-public class CacheUtils {
+public class IMCacheUtils {
     public static File getCacheDirectory(Context context,
                                          boolean preferExternal, String dirName) {
         File appCacheDir = null;
@@ -56,7 +56,7 @@ public class CacheUtils {
         return appCacheDir;
     }
 
-    private static final String TAG = "CacheUtils";
+    private static final String TAG = "IMCacheUtils";
     private static final String EXTERNAL_STORAGE_PERMISSION = "android.permission.WRITE_EXTERNAL_STORAGE";
 
     private static boolean hasExternalStoragePermission(Context context) {

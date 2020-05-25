@@ -36,7 +36,7 @@ import android.widget.TextView;
 
 
 import com.alibaba.fastjson.JSONException;
-import com.example.imxbkslibrary.base.BaseActivity;
+import com.example.imxbkslibrary.base.IMBaseActivity;
 import com.example.imxbkslibrary.bean.FristSendSocketBean;
 import com.example.imxbkslibrary.bean.HistoryDataBean;
 import com.example.imxbkslibrary.bean.PullHistoryData;
@@ -44,12 +44,12 @@ import com.example.imxbkslibrary.bean.ReceiveDataBean;
 import com.example.imxbkslibrary.bean.ReceiveDataListBean;
 import com.example.imxbkslibrary.bean.RobotDataBean;
 import com.example.imxbkslibrary.bean.SocketDataBean;
-import com.example.imxbkslibrary.bean.UserInfoBean;
+import com.example.imxbkslibrary.bean.IMUserInfoBean;
 import com.example.imxbkslibrary.ui.IMMessageAdapter;
-import com.example.imxbkslibrary.ui.SelectPhotoDialog;
-import com.example.imxbkslibrary.util.CacheUtils;
-import com.example.imxbkslibrary.util.KeyboardChangeListener;
-import com.example.imxbkslibrary.util.ToastUtils;
+import com.example.imxbkslibrary.ui.IMSelectPhotoDialog;
+import com.example.imxbkslibrary.util.IMCacheUtils;
+import com.example.imxbkslibrary.util.IMKeyboardChangeListener;
+import com.example.imxbkslibrary.util.IMToastUtils;
 import com.scwang.smartrefresh.layout.SmartRefreshLayout;
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
@@ -68,8 +68,8 @@ import static com.scwang.smartrefresh.layout.header.ClassicsHeader.REFRESH_HEADE
 /**
  * 客户端
  */
-public class IMClientActivity extends BaseActivity implements View.OnClickListener {
-    private String TAG="--IMClientActivity--";
+public class IMClientActivityIM extends IMBaseActivity implements View.OnClickListener {
+    private String TAG="--IMClientActivityIM--";
     private JWebSocketClient client;
     private JWebSocketClientService.JWebSocketClientBinder binder;
     private JWebSocketClientService jWebSClientService;
@@ -84,7 +84,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
     private IMMessageAdapter imMessageAdapter;
     private List<SocketDataBean.Params> listBeans;
 
-    private SelectPhotoDialog photoview;
+    private IMSelectPhotoDialog photoview;
     private File imgFile = null;
 
     private Uri uri;
@@ -120,7 +120,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
     private String imgUrl="";
     private boolean robot;
     private SocketDataBean.Params robotBean;
-    private UserInfoBean userInfoBean;
+    private IMUserInfoBean IMUserInfoBean;
     private int page=1;
     private String bundleFid;
     private String ucity;
@@ -147,7 +147,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
         iv_open_img.setVisibility(View.VISIBLE);
         tv_send.setVisibility(View.GONE);
         //创建选择相册对话框
-        photoview = new SelectPhotoDialog(this);
+        photoview = new IMSelectPhotoDialog(this);
 //        startJWebSClientService();
         bindService();
         doRegisterReceiver();
@@ -169,7 +169,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
         }
 
         listBeans=new ArrayList<>();
-        imMessageAdapter=new IMMessageAdapter(listBeans,this,userInfoBean.getData().getUser_id());
+        imMessageAdapter=new IMMessageAdapter(listBeans,this, IMUserInfoBean.getData().getUser_id());
         recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
         recycler_view.setAdapter(imMessageAdapter);
 
@@ -227,8 +227,8 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                 super.onScrolled(recyclerView, dx, dy);
             }
         });
-        KeyboardChangeListener softKeyboardStateHelper = new KeyboardChangeListener(this);
-        softKeyboardStateHelper.setKeyBoardListener(new KeyboardChangeListener.KeyBoardListener() {
+        IMKeyboardChangeListener softKeyboardStateHelper = new IMKeyboardChangeListener(this);
+        softKeyboardStateHelper.setKeyBoardListener(new IMKeyboardChangeListener.KeyBoardListener() {
             @Override
             public void onKeyboardChange(boolean isShow, int keyboardHeight) {
                 if (isShow) {
@@ -261,7 +261,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                     String mobile=umobile;
                     String name=uname;
                   Intent intent=new Intent();
-                  intent.setClass(IMClientActivity.this,IMUserInfoActivity.class);
+                  intent.setClass(IMClientActivityIM.this, IMUserInfoActivityIM.class);
                   intent.putExtra("avatar",avatar);
                   intent.putExtra("city_text",city_text);
                   intent.putExtra("mobile",mobile);
@@ -280,8 +280,8 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
             photoview.dismiss();
         }else if (v.getId()==R.id.btn_pz){
             photoview.dismiss();
-            if (-1==ContextCompat.checkSelfPermission(IMClientActivity.this, Manifest.permission.CAMERA)){
-                ActivityCompat.requestPermissions(IMClientActivity.this, new String[]{Manifest.permission.CAMERA},
+            if (-1==ContextCompat.checkSelfPermission(IMClientActivityIM.this, Manifest.permission.CAMERA)){
+                ActivityCompat.requestPermissions(IMClientActivityIM.this, new String[]{Manifest.permission.CAMERA},
                         6);
             }
             else{
@@ -289,8 +289,8 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
             }
         }else if (v.getId()==R.id.btn_xc){
             photoview.dismiss();
-            if (-1==ContextCompat.checkSelfPermission(IMClientActivity.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
-                ActivityCompat.requestPermissions(IMClientActivity.this,
+            if (-1==ContextCompat.checkSelfPermission(IMClientActivityIM.this, Manifest.permission.WRITE_EXTERNAL_STORAGE)){
+                ActivityCompat.requestPermissions(IMClientActivityIM.this,
                         new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                         7);
             }
@@ -312,16 +312,16 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
       String userinfo=getIntent().getStringExtra("userinfo");
       Log.e(TAG,"获取用户信息"+userinfo);
       if (!TextUtils.isEmpty(userinfo)){
-          userInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo,UserInfoBean.class);
+          IMUserInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
           params = new SocketDataBean.Params();
-          params.setUid(userInfoBean.getData().getUser_id());
-          params.setAvatar(userInfoBean.getData().getAvatar());
-          params.setMobile(userInfoBean.getData().getMobile());
+          params.setUid(IMUserInfoBean.getData().getUser_id());
+          params.setAvatar(IMUserInfoBean.getData().getAvatar());
+          params.setMobile(IMUserInfoBean.getData().getMobile());
           params.setRole("0");
-          params.setUname(userInfoBean.getData().getNickname());
+          params.setUname(IMUserInfoBean.getData().getNickname());
 
 
-          UserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo,UserInfoBean.class);
+          IMUserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
           fristSendSocketBean = new FristSendSocketBean();
           FristSendSocketBean.Params params= fristSendSocketBean.new Params();
           params.setAvatar(data.getData().getAvatar());
@@ -345,8 +345,8 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
         }
         Log.e(TAG,"获取用户信息"+userinfo);
         if (!TextUtils.isEmpty(userinfo)){
-            userInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo,UserInfoBean.class);
-            UserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo,UserInfoBean.class);
+            IMUserInfoBean = com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
+            IMUserInfoBean data= com.alibaba.fastjson.JSONObject.parseObject(userinfo, IMUserInfoBean.class);
             fristSendSocketBean = new FristSendSocketBean();
             FristSendSocketBean.Params params= fristSendSocketBean.new Params();
             params.setAvatar(data.getData().getAvatar());
@@ -379,9 +379,9 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                       params1.setContent(et_content.getText().toString().trim());
                       params1.setType("text");
                       params1.setTime(System.currentTimeMillis()+"");
-                      params1.setUid(userInfoBean.getData().getUser_id());
-                      params1.setAvatar(userInfoBean.getData().getAvatar());
-                      params1.setMobile(userInfoBean.getData().getMobile());
+                      params1.setUid(IMUserInfoBean.getData().getUser_id());
+                      params1.setAvatar(IMUserInfoBean.getData().getAvatar());
+                      params1.setMobile(IMUserInfoBean.getData().getMobile());
                       if (bundleFid==null){
                           params1.setRole("0");
                           params1.setFid(fid);
@@ -389,7 +389,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                           params1.setRole("1");
                           params1.setFid(bundleFid);
                       }
-                      params1.setUname(userInfoBean.getData().getNickname());
+                      params1.setUname(IMUserInfoBean.getData().getNickname());
 
                       listBeans.add(params1);
                       imMessageAdapter.notifyItemInserted(listBeans.size()-1);
@@ -401,7 +401,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                       Log.e("--sendMessage--",""+com.alibaba.fastjson.JSONObject.toJSONString(socketDataBean));
 
                   }else {
-                      ToastUtils.ToastShowShort(this,"不能发送空白消息！");
+                      IMToastUtils.ToastShowShort(this,"不能发送空白消息！");
                   }
                   break;
               case 1:
@@ -411,9 +411,9 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 //                      params2.setStatus(1);
                       params2.setTime(System.currentTimeMillis()+"");
                       params2.setImg_path(filepath);
-                      params2.setUid(userInfoBean.getData().getUser_id());
-                      params2.setAvatar(userInfoBean.getData().getAvatar());
-                      params2.setMobile(userInfoBean.getData().getMobile());
+                      params2.setUid(IMUserInfoBean.getData().getUser_id());
+                      params2.setAvatar(IMUserInfoBean.getData().getAvatar());
+                      params2.setMobile(IMUserInfoBean.getData().getMobile());
                       if (bundleFid==null){//用户
                           params2.setRole("0");
                           params2.setFid(fid);
@@ -422,7 +422,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                           params2.setFid(bundleFid);
                       }
 
-                      params2.setUname(userInfoBean.getData().getNickname());
+                      params2.setUname(IMUserInfoBean.getData().getNickname());
 
                       listBeans.add(params2);
                       imMessageAdapter.notifyItemInserted(listBeans.size()-1);
@@ -439,7 +439,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
                   params3.setPage(page+"");
                   params3.setType("history");
                   if (bundleFid==null) {//用户
-                      params3.setUserid(userInfoBean.getData().getUser_id());
+                      params3.setUserid(IMUserInfoBean.getData().getUser_id());
                   }else {
                       params3.setUserid(bundleFid);
                   }
@@ -452,7 +452,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 
       }else {
           hideKeyboard();
-          ToastUtils.ToastShowShort(this,"已断开连接！");
+          IMToastUtils.ToastShowShort(this,"已断开连接！");
       }
 
   }
@@ -700,7 +700,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
      * 绑定服务
      */
     private void bindService() {
-        Intent bindIntent = new Intent(IMClientActivity.this, JWebSocketClientService.class);
+        Intent bindIntent = new Intent(IMClientActivityIM.this, JWebSocketClientService.class);
         bindService(bindIntent, serviceConnection, BIND_AUTO_CREATE);
     }
 
@@ -724,7 +724,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 
     //拍照
     private void takePhoto() {
-        imgFile = new File(CacheUtils.getCacheDirectory(this, true, "icon")
+        imgFile = new File(IMCacheUtils.getCacheDirectory(this, true, "icon")
                 + "pic");
         if (imgFile.exists()) {
             imgFile.delete();
@@ -739,7 +739,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
         if (Build.VERSION.SDK_INT < 24) {
             uri = Uri.fromFile(imgFile);//7.0这里会闪退
         } else {
-            uri = FileProvider.getUriForFile(IMClientActivity.this, "com.xbhc.user.fileprovider", imgFile);
+            uri = FileProvider.getUriForFile(IMClientActivityIM.this, "com.xbhc.user.fileprovider", imgFile);
             camera.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);//添加这一句表示对目标应用临时授权该Uri所代表的文件
         }
         camera.putExtra(MediaStore.EXTRA_OUTPUT, uri);
@@ -763,7 +763,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 //            if (data != null)
 //            {
 //                Uri uri = data.getData();
-//                String imgpath = BitmapComPressUtils.getRealFilePath(IMClientActivity.this, uri);
+//                String imgpath = BitmapComPressUtils.getRealFilePath(IMClientActivityIM.this, uri);
 //                Intent intent = new Intent(this, ActivityPhoto.class);
 //                intent.putExtra("path", imgpath);
 //                startActivityForResult(intent, FLAG_MODIFY_FINISH);
@@ -785,11 +785,11 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 //                filepath = path;
 //
 //                //将图片进行双重压缩后再上传
-//                Bitmap imgBitmap = BitmapComPressUtils.getDecordeImage(IMClientActivity.this, filepath, 800f, 400f);
+//                Bitmap imgBitmap = BitmapComPressUtils.getDecordeImage(IMClientActivityIM.this, filepath, 800f, 400f);
 //
 //                int degree = readPicCurDegree(filepath);             //查询图片翻转的角度
 //                Bitmap bitmap = rotaingImageView(degree,imgBitmap);           //旋转图片
-////                String imgpath = BitmapComPressUtils.saveBitmap(IMClientActivity.this, bitmap);     //保存图片
+////                String imgpath = BitmapComPressUtils.saveBitmap(IMClientActivityIM.this, bitmap);     //保存图片
 //
 //
 //
@@ -851,7 +851,7 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 //        RetrofitManager.getInstance().doPost(MyConfig.QR_URL + "site/upload", map, new RetrofitManager.ICallBack() {
 //            @Override
 //            public void successData(String result) {
-//                ImageDataBean.DataBean imageDataBean= com.alibaba.fastjson.JSONObject.parseObject(result,ImageDataBean.DataBean.class);
+//                IMImageDataBean.DataBean imageDataBean= com.alibaba.fastjson.JSONObject.parseObject(result,IMImageDataBean.DataBean.class);
 ////                if (imageDataBean.getCode()==0){
 //                    imgUrl = imageDataBean.getPath();
 //                    sendMessage(1);
@@ -867,13 +867,13 @@ public class IMClientActivity extends BaseActivity implements View.OnClickListen
 
     private void upImage(String image_path){
         if ( IMSystem.getInstance().getExecuteImageUp()==null){
-            ToastUtils.ToastShowShort(IMClientActivity.this,"请实现上传图片的方法");
+            IMToastUtils.ToastShowShort(IMClientActivityIM.this,"请实现上传图片的方法");
             return;
         }
         IMSystem.getInstance().getExecuteImageUp().upImg(image_path, "123", new UpImageCallback() {
             @Override
             public void upadd(String path, String id) {
-                ToastUtils.ToastShowShort(IMClientActivity.this,""+path+"  \n"+id);
+                IMToastUtils.ToastShowShort(IMClientActivityIM.this,""+path+"  \n"+id);
             }
         });
     }

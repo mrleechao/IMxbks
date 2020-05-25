@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class DateUtils {
+public class IMDateUtils {
     private static SimpleDateFormat sf;
     private static SimpleDateFormat sdf;
 

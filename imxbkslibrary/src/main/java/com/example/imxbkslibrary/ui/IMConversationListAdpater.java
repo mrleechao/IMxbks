@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.constraint.ConstraintLayout;
 import android.support.v7.widget.RecyclerView;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,10 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.bitmap.CircleCrop;
 import com.bumptech.glide.request.RequestOptions;
-import com.example.imxbkslibrary.IMClientActivity;
+import com.example.imxbkslibrary.IMClientActivityIM;
 import com.example.imxbkslibrary.R;
 import com.example.imxbkslibrary.servicebean.ConversationListData;
-import com.example.imxbkslibrary.util.DateUtils;
+import com.example.imxbkslibrary.util.IMDateUtils;
 
 import java.util.List;
 
@@ -59,12 +58,12 @@ public class IMConversationListAdpater extends RecyclerView.Adapter<IMConversati
         }
 
         if (dataBeanList.get(position).getLasttime()!=null&&dataBeanList.get(position).getLasttime().length()>0)
-        holder.tv_time.setText(DateUtils.getDateToString(Long.parseLong(dataBeanList.get(position).getLasttime())).substring(5));
+        holder.tv_time.setText(IMDateUtils.getDateToString(Long.parseLong(dataBeanList.get(position).getLasttime())).substring(5));
         holder.parent_click.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent();
-                intent.setClass(context, IMClientActivity.class);
+                intent.setClass(context, IMClientActivityIM.class);
                 intent.putExtra("bundleFid",dataBeanList.get(position).getUid());
                 intent.putExtra("uname",dataBeanList.get(position).getUname());
                 context.startActivity(intent);

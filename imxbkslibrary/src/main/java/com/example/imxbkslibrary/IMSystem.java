@@ -48,9 +48,9 @@ public class IMSystem {
                 Intent intent=new Intent();
                 intent.putExtra("userinfo",userinfo);
                 if (is_service.equals("0")){
-                    intent.setClass(context,IMClientActivity.class);
+                    intent.setClass(context, IMClientActivityIM.class);
                 }else {
-                    intent.setClass(context,IMConversationListActivity.class);
+                    intent.setClass(context, IMConversationListActivityIM.class);
                 }
                 context.startActivity(intent);
             }

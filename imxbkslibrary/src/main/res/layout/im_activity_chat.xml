@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="#ffffff"
-    tools:context=".IMClientActivity">
+    tools:context=".IMClientActivityIM">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="55dp"

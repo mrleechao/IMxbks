@@ -4,7 +4,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.example.imxbkslibrary.base.BaseActivity;
+import com.example.imxbkslibrary.base.IMBaseActivity;
 
 /**
  * Time:2020/5/21
@@ -13,7 +13,7 @@ import com.example.imxbkslibrary.base.BaseActivity;
  * <p>
  * Description:
  */
-public class IMUserInfoActivity extends BaseActivity {
+public class IMUserInfoActivityIM extends IMBaseActivity {
 
     private ImageView iv_head;
     private TextView tv_name,tv_table,tv_phone,tv_city_name;
