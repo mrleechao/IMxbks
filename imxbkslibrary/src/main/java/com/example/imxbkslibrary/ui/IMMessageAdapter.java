@@ -69,7 +69,12 @@ private List<SocketDataBean.Params> listBeans;
                     }else {
                         holder.tv_time_left.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
                     }
+                    holder.tv_time_left.setVisibility(View.VISIBLE);
+                }else {
+                    holder.tv_time_left.setVisibility(View.GONE);
                 }
+
+
 
                 if (listBeans.get(position).getType().equals("text")){
                     holder.message_left.setVisibility(View.VISIBLE);
@@ -104,7 +109,20 @@ private List<SocketDataBean.Params> listBeans;
                 holder.tv_name_right.setText(""+listBeans.get(position).getUname());
                  Glide.with(context).load(listBeans.get(position).getAvatar())
                  .into(holder.iv_head_right);
-                holder.tv_time_right.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
+                 if(!TextUtils.isEmpty(listBeans.get(position).getTime())){
+                     int timelength=listBeans.get(position).getTime().length();
+                     if (timelength==10){
+                         holder.tv_time_right.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime()+"000")));
+                     }else {
+                         holder.tv_time_right.setText(""+ IMDateUtils.getDateToString(Long.parseLong(listBeans.get(position).getTime())));
+                     }
+                     holder.tv_time_right.setVisibility(View.VISIBLE);
+
+                 }else {
+                     holder.tv_time_right.setVisibility(View.GONE);
+                 }
+
+
                 if (listBeans.get(position).getType().equals("text")) {
                     holder.message_right.setVisibility(View.VISIBLE);
                     holder.iv_message_right.setVisibility(View.GONE);

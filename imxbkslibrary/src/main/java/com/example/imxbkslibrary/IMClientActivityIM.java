@@ -1,4 +1,4 @@
-package com.example.imxbkslibrary;
+ package com.example.imxbkslibrary;
 
 import android.Manifest;
 import android.content.BroadcastReceiver;
@@ -172,7 +172,10 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
 
         listBeans=new ArrayList<>();
         imMessageAdapter=new IMMessageAdapter(listBeans,this, IMUserInfoBean.getData().getUser_id());
-        recycler_view.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false));
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(this, LinearLayoutManager.VERTICAL,false);
+        linearLayoutManager.setStackFromEnd(true);
+        linearLayoutManager.scrollToPositionWithOffset(imMessageAdapter.getItemCount() - 1, Integer.MIN_VALUE);
+        recycler_view.setLayoutManager(linearLayoutManager);
         recycler_view.setAdapter(imMessageAdapter);
 
         et_content.addTextChangedListener(new TextWatcher() {
@@ -235,7 +238,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
             public void onKeyboardChange(boolean isShow, int keyboardHeight) {
                 if (isShow) {
                     //键盘的弹出
-                    uihandler.sendEmptyMessageDelayed(1,160);
+//                    uihandler.sendEmptyMessageDelayed(1,160);
                 } else {
                     //键盘的收起
 //                    et_seartch.setCursorVisible(false);
@@ -384,7 +387,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
                       SocketDataBean.Params params1=new SocketDataBean.Params();
                       params1.setContent(et_content.getText().toString().trim());
                       params1.setType("text");
-                      params1.setTime(System.currentTimeMillis()+"");
+                      params1.setTime(System.currentTimeMillis()/1000+"");
                       params1.setUid(IMUserInfoBean.getData().getUser_id());
                       params1.setAvatar(IMUserInfoBean.getData().getAvatar());
                       params1.setMobile(IMUserInfoBean.getData().getMobile());
@@ -415,7 +418,7 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
                       params2.setContent(imgUrl);
                       params2.setType("image");
 //                      params2.setStatus(1);
-                      params2.setTime(System.currentTimeMillis()+"");
+                      params2.setTime(System.currentTimeMillis()/1000+"");
                       params2.setImg_path(filepath);
                       params2.setUid(IMUserInfoBean.getData().getUser_id());
                       params2.setAvatar(IMUserInfoBean.getData().getAvatar());
@@ -502,10 +505,12 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
                                                 if (robot){
                                                     listBeans.add(robotBean);
                                                 }
-                                                imMessageAdapter.notifyDataSetChanged();
-                                                if (listBeans.size()>1){
-                                                    recycler_view.smoothScrollToPosition(listBeans.size()-1);
-                                                }
+//                                                timeDispose();
+                                                imMessageAdapter .notifyDataSetChanged();
+//                                                if (listBeans.size()>1){
+//                                                    recycler_view.smoothScrollToPosition(listBeans.size()-1);
+//                                                }
+//                                                uihandler.sendEmptyMessageDelayed(1,1000);
                                                 fid=historyDataBean.getMessage().getData().getFid()+"";
                                                 Log.e(TAG, "-----历史消息"+com.alibaba.fastjson.JSONObject.toJSONString(list));
                                                 Log.e(TAG, "-----当前列表信息"+com.alibaba.fastjson.JSONObject.toJSONString(listBeans));
@@ -543,10 +548,12 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
                                                 if (robot){
                                                     listBeans.add(robotBean);
                                                 }
+
                                                 imMessageAdapter.notifyDataSetChanged();
-                                                if (listBeans.size()>1){
-                                                    recycler_view.smoothScrollToPosition(listBeans.size()-1);
-                                                }
+//                                                if (listBeans.size()>1){
+//                                                    recycler_view.smoothScrollToPosition(listBeans.size()-1);
+//                                                }
+//                                                uihandler.sendEmptyMessageDelayed(1,1000);
                                                 fid=historyDataBean.getMessage().getData().getFid()+"";
                                                 Log.e(TAG, "-----历史消息"+com.alibaba.fastjson.JSONObject.toJSONString(slist));
                                                 Log.e(TAG, "-----当前列表信息"+com.alibaba.fastjson.JSONObject.toJSONString(listBeans));
@@ -659,6 +666,33 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
 
         }
     }
+
+    private void timeDispose(){
+        List<Integer> integers=new ArrayList<>();
+
+        long last;
+        for (int i = 0; i < listBeans.size(); i++) {
+            if (i>1){
+                last= Long.parseLong(listBeans.get(i-1).getTime());
+
+                if (Math.abs(Long.parseLong(listBeans.get(i).getTime())-last)<120){
+                    integers.add(0);
+                }else {
+                    integers.add(1);
+                }
+            }else {
+                integers.add(1);
+            }
+
+        }
+
+        for (int i = 0; i < listBeans.size(); i++) {
+            if (integers.get(i)==0){
+                listBeans.get(i).setTime("");
+            }
+        }
+    }
+
     /**
      * 动态注册广播
      */
@@ -881,12 +915,12 @@ public class IMClientActivityIM extends IMBaseActivity implements View.OnClickLi
             IMToastUtils.ToastShowShort(IMClientActivityIM.this,"请实现上传图片的方法");
             return;
         }
-        IMSystem.getInstance().getExecuteImageUp().upImg(IMClientActivityIM.this,image_path, "123", new UpImageCallback() {
+        IMSystem.getInstance().getExecuteImageUp().upImg(IMClientActivityIM.this,image_path, "0", new UpImageCallback() {
             @Override
             public void upadd(String result, String id) {
-            IMImageDataBean.DataBean imageDataBean= com.alibaba.fastjson.JSONObject.parseObject(result,IMImageDataBean.DataBean.class);
+//            IMImageDataBean.DataBean imageDataBean= com.alibaba.fastjson.JSONObject.parseObject(result,IMImageDataBean.DataBean.class);
 //                if (imageDataBean.getCode()==0){
-                    imgUrl = imageDataBean.getPath();
+                    imgUrl = result;
                     sendMessage(1);
 //                }
 

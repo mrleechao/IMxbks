@@ -76,7 +76,8 @@ public class JWebSocketClientService extends Service {
      * 初始化websocket连接
      */
     private void initSocketClient() {
-        URI uri = URI.create("wss://websocket.xbhc.com.cn/dev"/*"wss://websocket.xbhc.com.cn/wss"*/);
+//        URI uri = URI.create("wss://websocket.xbhc.com.cn/dev"/*"wss://websocket.xbhc.com.cn/wss"*/);
+        URI uri = URI.create(IMSystem.getInstance().getServerUri());
         client = new JWebSocketClient(uri) {
             @Override
             public void onMessage(String message) {

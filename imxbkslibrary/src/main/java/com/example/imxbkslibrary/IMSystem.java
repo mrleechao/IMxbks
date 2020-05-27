@@ -33,18 +33,23 @@ public class IMSystem {
     private String UserInfo;
     private String Token;
     private String authority;
+    private String serverUri;
 
 
     /**
      * 进入客服系统调用方法
      * @param context
+     * @param serverUri WebSocket地址
      * @param userinfo  用户信息
      * @param authority The authority of a {@link FileProvider} defined in a
      *        {@code <provider>} element in your app's manifest.
      */
-    public IMSystem intoIM(@NonNull Context context,@NonNull  String userinfo,@NonNull  String authority){
+    public IMSystem intoIM(@NonNull Context context,@NonNull  String serverUri,@NonNull  String userinfo,@NonNull  String authority){
         if (TextUtils.isEmpty(userinfo)){
             throw new NullPointerException("检查参数userinfo是否正确");
+        }
+        if (TextUtils.isEmpty(serverUri)){
+            throw new NullPointerException("检查参数serverUri是否正确");
         }
         if (TextUtils.isEmpty(authority)){
             throw new NullPointerException("检查参数authority是否正确");
@@ -52,6 +57,7 @@ public class IMSystem {
         try {
             this.UserInfo=userinfo;
             this.authority=authority;
+            this.serverUri=serverUri;
             JSONObject jsonObject=new JSONObject(userinfo);
             JSONObject data=jsonObject.optJSONObject("data");
             String is_service=data.optString("is_service");
@@ -97,12 +103,16 @@ public class IMSystem {
         return Token;
     }
 
-    public String getUserInfo() {
+    protected String getUserInfo() {
         return UserInfo;
     }
 
-    public String getAuthority() {
+    protected String getAuthority() {
         return authority;
+    }
+
+    protected String getServerUri() {
+        return serverUri;
     }
 
     /**

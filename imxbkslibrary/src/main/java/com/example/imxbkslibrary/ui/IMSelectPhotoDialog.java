@@ -26,7 +26,7 @@ public class IMSelectPhotoDialog
         LayoutInflater inflater = LayoutInflater.from(context);
         //选择头像的方式对话框布局文件
         View view = inflater.inflate(R.layout.im_activity_setphoto_select, null);
-        mDialog = new Dialog(context);
+        mDialog = new Dialog(context,R.style.im_customDialog_photo);
         mDialog.setContentView(view);
         mDialog.setCanceledOnTouchOutside(true);
         btn_pz = (Button) view.findViewById(R.id.btn_pz);
